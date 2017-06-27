@@ -1,27 +1,5 @@
-import Rx from 'rxjs';
-import './app.scss';
+import UnlockScreen from './lib/UnlockScreen.js';
 
-const box = document.getElementById('box');
+const app = document.getElementById('app');
 
-const mouseUp$ = Rx.Observable.fromEvent(document, 'mouseup')
-
-const boxclick$ = Rx.Observable
-  .fromEvent(box, 'mousedown')
-  .do(e => e.preventDefault())
-  .map(e => e.pageX)
-  .switchMap((click) => Rx.Observable
-    .fromEvent(document, 'mousemove')
-    .map((e) => e.pageX)
-    .do(x => box.style.left = x - click + 'px')
-    .takeUntil(mouseUp$)
-  );
-
-boxclick$
-  .switchMap(() => mouseUp$
-    .do(() => box.style.left = 0 + 'px')
-  )
-  .subscribe(() => console.log('up and reset'));
-
-boxclick$.subscribe(x => {
-  console.log(x);
-});
+UnlockScreen(app);
