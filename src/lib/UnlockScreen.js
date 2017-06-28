@@ -30,14 +30,15 @@ export default function UnlockScreen () {
       Observable.fromEvent(box, 'touchstart')
     )
     .do(e => e.preventDefault())
-    .map(e => e.pageX);
+    .map(e => (e.type == 'mousedown') ? e.pageX : e.touches[0].pageX);
 
   const boxMove$ = boxClick$
     .switchMap(pageX => Observable.merge(
         Observable.fromEvent(document, 'mousemove'),
         Observable.fromEvent(document, 'touchmove')
       )
-      .map((e) => Math.max(0, e.pageX - pageX))
+      .map(e => (e.type == 'mousemove') ? e : e.touches[0])
+      .map(e => Math.max(0, e.pageX - pageX))
       .takeUntil(mouseUp$)
     );
 

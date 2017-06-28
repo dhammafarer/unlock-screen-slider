@@ -21,7 +21,7 @@
     "style-loader": "^0.18.2"
   },
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "start": "webpack-dev-server --open --inline --host 192.168.1.89",
     "build": "webpack -p",
     "deploy": "npm run build && gh-pages -d dist"
   }
