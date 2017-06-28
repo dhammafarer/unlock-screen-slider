@@ -1,6 +1,15 @@
 'use strict';
 
-import Rx from 'rxjs';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mapTo';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/take';
+import 'rxjs/add/operator/takeUntil';
+
 import './UnlockScreen.scss';
 import {TweenMax, TimelineMax} from 'gsap';
 
@@ -10,15 +19,15 @@ export default function UnlockScreen () {
   const text = document.querySelector('.text');
   const box = document.querySelector('.box');
 
-  const mouseUp$ = Rx.Observable.fromEvent(document, 'mouseup');
+  const mouseUp$ = Observable.fromEvent(document, 'mouseup');
 
-  const boxClick$ = Rx.Observable
+  const boxClick$ = Observable
     .fromEvent(box, 'mousedown')
     .do(e => e.preventDefault())
     .map(e => e.pageX);
 
   const boxMove$ = boxClick$
-    .switchMap(pageX => Rx.Observable
+    .switchMap(pageX => Observable
       .fromEvent(document, 'mousemove')
       .map((e) => Math.max(0, e.pageX - pageX))
       .takeUntil(mouseUp$)

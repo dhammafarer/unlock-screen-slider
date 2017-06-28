@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --open",
-    "build": "webpack",
-    "deploy": "gh-pages -d dist"
+    "build": "webpack -p",
+    "deploy": "npm run build && gh-pages -d dist"
   }
 }

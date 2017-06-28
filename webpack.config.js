@@ -6,7 +6,6 @@ const config = {
   devtool: 'cheap-eval-source-map',
   context: path.resolve(__dirname, 'src'),
   entry: {
-    vendor:['rxjs', 'gsap'],
     app: './index.js'
   },
   output: {
@@ -29,9 +28,6 @@ const config = {
     ]
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
-    }),
     new HtmlWebpackPlugin({template: 'index.html'})
   ],
   devServer: {
