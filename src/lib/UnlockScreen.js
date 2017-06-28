@@ -1,31 +1,21 @@
+'use strict';
+
 import Rx from 'rxjs';
 import './UnlockScreen.scss';
 import {TweenMax, TimelineMax} from 'gsap';
 
-export default function unlockScreen(el) {
-  const unlockScreen = document.createElement('div');
-  const slider = document.createElement('div');
-  const text = document.createElement('div');
-  const box = document.createElement('div');
-
-  unlockScreen.className = 'unlock-screen';
-  slider.className = 'slider'
-  text.className = 'text';
-  text.textContent = 'Slide to unlock...'
-  box.className = 'box';
-
-  slider.appendChild(text);
-  slider.appendChild(box);
-  unlockScreen.appendChild(slider);
-
-  el.appendChild(unlockScreen);
+export default function UnlockScreen () {
+  const unlockScreen = document.querySelector('.unlock-screen');
+  const slider = document.querySelector('.slider');
+  const text = document.querySelector('.text');
+  const box = document.querySelector('.box');
 
   const mouseUp$ = Rx.Observable.fromEvent(document, 'mouseup');
 
   const boxClick$ = Rx.Observable
     .fromEvent(box, 'mousedown')
     .do(e => e.preventDefault())
-    .map(e => e.pageX)
+    .map(e => e.pageX);
 
   const boxMove$ = boxClick$
     .switchMap(pageX => Rx.Observable
@@ -73,4 +63,3 @@ export default function unlockScreen(el) {
     return val;
   }
 }
-
