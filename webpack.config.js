@@ -6,7 +6,7 @@ const config = {
   devtool: 'cheap-eval-source-map',
   context: path.resolve(__dirname, 'src'),
   entry: {
-    vendor:['rxjs', 'd3'],
+    vendor:['rxjs', 'gsap'],
     app: './index.js'
   },
   output: {
