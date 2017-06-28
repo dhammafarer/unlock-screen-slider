@@ -2,6 +2,7 @@
 
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mapTo';
@@ -19,16 +20,23 @@ export default function UnlockScreen () {
   const text = document.querySelector('.text');
   const box = document.querySelector('.box');
 
-  const mouseUp$ = Observable.fromEvent(document, 'mouseup');
+  const mouseUp$ = Observable.merge(
+    Observable.fromEvent(document, 'mouseup'),
+    Observable.fromEvent(document, 'touchend')
+  );
 
-  const boxClick$ = Observable
-    .fromEvent(box, 'mousedown')
+  const boxClick$ = Observable.merge(
+      Observable.fromEvent(box, 'mousedown'),
+      Observable.fromEvent(box, 'touchstart')
+    )
     .do(e => e.preventDefault())
     .map(e => e.pageX);
 
   const boxMove$ = boxClick$
-    .switchMap(pageX => Observable
-      .fromEvent(document, 'mousemove')
+    .switchMap(pageX => Observable.merge(
+        Observable.fromEvent(document, 'mousemove'),
+        Observable.fromEvent(document, 'touchmove')
+      )
       .map((e) => Math.max(0, e.pageX - pageX))
       .takeUntil(mouseUp$)
     );
